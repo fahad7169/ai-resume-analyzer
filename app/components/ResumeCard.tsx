@@ -60,12 +60,12 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath }
                     <div className="flex items-center justify-between">
                         <div className="flex-1">
                             {companyName ? (
-                                <h2 className="!text-white font-bold break-words text-xl">{companyName}</h2>
+                                <h2 className="text-[color:var(--color-text-primary)] font-bold break-words text-xl">{companyName}</h2>
                             ) : (
-                                <h2 className="!text-white font-bold text-xl">General Resume</h2>
+                                <h2 className="text-[color:var(--color-text-primary)] font-bold text-xl">General Resume</h2>
                             )}
                             {jobTitle && (
-                                <h3 className="text-base break-words text-[#A5B4C7] mt-1">{jobTitle}</h3>
+                                <h3 className="text-base break-words text-[color:var(--color-text-secondary)] mt-1">{jobTitle}</h3>
                             )}
                         </div>
                         <div className="flex-shrink-0 ml-4">
@@ -78,8 +78,8 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath }
                         <span className={`text-sm font-semibold ${getScoreColor(feedback.overallScore)}`}>
                             {getScoreLabel(feedback.overallScore)}
                         </span>
-                        <span className="text-[#6B7A8F] text-sm">•</span>
-                        <span className="text-[#A5B4C7] text-sm">
+                        <span className="text-[color:var(--color-text-muted)] text-sm">•</span>
+                        <span className="text-[color:var(--color-text-secondary)] text-sm">
                             {feedback.overallScore}/100 Overall Score
                         </span>
                     </div>
@@ -114,7 +114,7 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback, imagePath }
                                     <span className="text-xs">Quality: {Math.round((feedback.content?.score + feedback.structure?.score) / 2) || 'N/A'}</span>
                                 </div>
                             </div>
-                            <div className="text-xs text-[#A5B4C7]">
+                            <div className="text-xs text-[color:var(--color-text-secondary)]">
                                 Click to review
                             </div>
                         </div>

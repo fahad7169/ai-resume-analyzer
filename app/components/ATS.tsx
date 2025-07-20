@@ -33,7 +33,7 @@ const ATS: React.FC<ATSProps> = ({ score, suggestions }) => {
       : 'Needs Improvement';
 
   return (
-    <div className="glass-effect rounded-2xl shadow-2xl w-full p-6 border border-[#2A3441]/50">
+    <div className="glass-effect rounded-2xl shadow-2xl w-full p-6 border border-[color:var(--color-border)]/50">
       {/* Top section with icon and headline */}
       <div className="flex items-center gap-4 mb-6">
         <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br`} style={{background: `linear-gradient(135deg, ${scoreColor}20, ${scoreColor}10)`}}>
@@ -52,21 +52,21 @@ const ATS: React.FC<ATSProps> = ({ score, suggestions }) => {
           )}
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-white">ATS Score - <span style={{color: scoreColor}}>{score}</span>/100</h2>
+          <h2 className="text-2xl font-bold text-[color:var(--color-text-primary)]">ATS Score - <span style={{color: scoreColor}}>{score}</span>/100</h2>
         </div>
       </div>
 
       {/* Description section */}
       <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-2 text-white">{subtitle}</h3>
-        <p className="text-[#A5B4C7] mb-4">
+        <h3 className="text-xl font-semibold mb-2 text-[color:var(--color-text-primary)]">{subtitle}</h3>
+        <p className="text-[color:var(--color-text-secondary)] mb-4">
           This score represents how well your resume is likely to perform in Applicant Tracking Systems used by employers.
         </p>
 
         {/* Suggestions list */}
         <div className="space-y-3">
           {suggestions.map((suggestion, index) => (
-            <div key={index} className="flex items-start gap-3 p-3 rounded-lg border border-[#2A3441]/30 bg-[#0A0E1A]/30">
+            <div key={index} className="flex items-start gap-3 p-3 rounded-lg border border-[color:var(--color-border)]/30 bg-[color:var(--color-bg-primary)]/30">
               {suggestion.type === "good" ? (
                 <svg className="w-5 h-5 mt-0.5 text-[#00D4AA] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -85,7 +85,7 @@ const ATS: React.FC<ATSProps> = ({ score, suggestions }) => {
       </div>
 
       {/* Closing encouragement */}
-      <p className="text-[#A5B4C7] italic">
+      <p className="text-[color:var(--color-text-secondary)] italic">
         Keep refining your resume to improve your chances of getting past ATS filters and into the hands of recruiters.
       </p>
     </div>

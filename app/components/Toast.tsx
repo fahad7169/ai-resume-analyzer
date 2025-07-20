@@ -92,10 +92,10 @@ const Toast = ({ id, type, title, message, duration = 5000, onClose }: ToastProp
         };
       default:
         return {
-          bg: 'bg-[#1E293B]',
-          border: 'border-[#334155]',
-          icon: 'text-[#94A3B8]',
-          text: 'text-white'
+          bg: 'bg-[#1E293B] dark:bg-[#1E293B] light:bg-[#FEFEFE]',
+          border: 'border-[#334155] dark:border-[#334155] light:border-[#E5E7EB]',
+          icon: 'text-[#94A3B8] dark:text-[#94A3B8] light:text-[#4B5563]',
+          text: 'text-white dark:text-white light:text-[#1F2937]'
         };
     }
   };

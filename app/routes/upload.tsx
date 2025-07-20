@@ -1,8 +1,8 @@
-import {type FormEvent, useState} from 'react'
+import {type FormEvent, useState, useEffect} from 'react'
 import Breadcrumb from "~/components/Breadcrumb";
 import { ToastContainer } from "~/components/Toast";
 import {usePuterStore} from "~/lib/puter";
-import {useNavigate, Link} from "react-router";
+import {useNavigate, Link, useLocation} from "react-router";
 import {prepareInstructions} from "../../constants";
 import FileUploader from '~/components/FileUploader';
 import { convertPdfToImage } from '~/lib/pdf2img';
@@ -12,10 +12,36 @@ import { useToast } from '~/hooks/useToast';
 export default function Upload() {
     const { auth, isLoading, fs, ai, kv } = usePuterStore();
     const navigate = useNavigate();
+    const location = useLocation();
     const [isProcessing, setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const { toasts, removeToast, showSuccess, showError, showWarning } = useToast();
+
+    // Check authentication and redirect if not logged in
+    useEffect(() => {
+        if (!isLoading && !auth.isAuthenticated) {
+            navigate('/auth?next=/upload');
+        }
+    }, [isLoading, auth.isAuthenticated, navigate]);
+
+    // Show loading state while checking auth
+    if (isLoading || !auth.isAuthenticated) {
+        return (
+            <main className="min-h-screen without-navbar">
+                <div className="flex items-center justify-center min-h-screen">
+                    <div className="text-center">
+                        <div className="w-16 h-16 bg-gradient-to-r from-[#4F75FF] to-[#FF6B6B] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <p className="text-[color:var(--color-text-secondary)]">Loading...</p>
+                    </div>
+                </div>
+            </main>
+        );
+    }
 
     const handleFileSelect = (file: File | null) => {
         setFile(file)
@@ -102,7 +128,7 @@ export default function Upload() {
     }
 
     return (
-        <main className="bg-[#0F172A] min-h-screen without-navbar">
+        <main className="min-h-screen without-navbar">
             <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
 
             <section className="main-section">
@@ -113,7 +139,7 @@ export default function Upload() {
                         <div className="flex items-center gap-2 mt-4">
                             <Link 
                                 to="/" 
-                                className="flex items-center gap-2 text-[#94A3B8] hover:text-white transition-colors group touch-manipulation"
+                                className="flex items-center gap-2 text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)] transition-colors group touch-manipulation"
                             >
                                 <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -153,18 +179,18 @@ export default function Upload() {
                                         </div>
                                         <span className="text-[#6366F1] font-medium text-sm sm:text-base">AI Analysis</span>
                                     </div>
-                                    <div className="w-8 sm:w-12 h-px bg-[#334155]"></div>
+                                    <div className="w-8 sm:w-12 h-px bg-[color:var(--color-border)]"></div>
                                     <div className="flex items-center gap-2">
-                                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#334155] rounded-full flex items-center justify-center">
-                                            <span className="text-[#64748B] text-xs sm:text-sm font-semibold">3</span>
+                                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[color:var(--color-border)] rounded-full flex items-center justify-center">
+                                            <span className="text-[color:var(--color-text-muted)] text-xs sm:text-sm font-semibold">3</span>
                                         </div>
-                                        <span className="text-[#64748B] font-medium text-sm sm:text-base">Results</span>
+                                        <span className="text-[color:var(--color-text-muted)] font-medium text-sm sm:text-base">Results</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Processing Card - Mobile Responsive */}
-                            <div className="bg-[#1E293B]/80 backdrop-blur-lg border border-[#334155] rounded-2xl p-4 sm:p-8 mb-6 sm:mb-8">
+                            <div className="bg-[color:var(--color-bg-card)]/80 backdrop-blur-lg border border-[color:var(--color-border)] rounded-2xl p-4 sm:p-8 mb-6 sm:mb-8">
                                 <div className="flex items-center justify-center mb-4 sm:mb-6">
                                     <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] rounded-full flex items-center justify-center">
                                         <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,14 +199,14 @@ export default function Upload() {
                                     </div>
                                 </div>
                                 
-                                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">Analyzing Your Resume</h3>
+                                <h3 className="text-xl sm:text-2xl font-bold text-[color:var(--color-text-primary)] mb-3 sm:mb-4">Analyzing Your Resume</h3>
                                 <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                                     <p className="text-base sm:text-lg text-[#6366F1] font-medium">{statusText}</p>
-                                    <p className="text-sm sm:text-base text-[#94A3B8]">Our AI is working on providing you with personalized feedback and ATS optimization tips.</p>
+                                    <p className="text-sm sm:text-base text-[color:var(--color-text-secondary)]">Our AI is working on providing you with personalized feedback and ATS optimization tips.</p>
                                 </div>
 
                                 {/* Progress Bar */}
-                                <div className="w-full bg-[#334155] rounded-full h-2 mb-4 sm:mb-6">
+                                <div className="w-full bg-[color:var(--color-border)] rounded-full h-2 mb-4 sm:mb-6">
                                     <div className="bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
                                 </div>
 
@@ -201,48 +227,48 @@ export default function Upload() {
                                         <span className="text-[#6366F1] font-medium text-sm sm:text-base">Running AI analysis...</span>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-[#334155] rounded-full flex items-center justify-center flex-shrink-0">
-                                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#64748B] rounded-full"></div>
+                                        <div className="w-4 h-4 sm:w-5 sm:h-5 bg-[color:var(--color-border)] rounded-full flex items-center justify-center flex-shrink-0">
+                                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[color:var(--color-text-muted)] rounded-full"></div>
                                         </div>
-                                        <span className="text-[#64748B] text-sm sm:text-base">Generating recommendations</span>
+                                        <span className="text-[color:var(--color-text-muted)] text-sm sm:text-base">Generating recommendations</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="text-center">
-                                <p className="text-xs sm:text-sm text-[#64748B]">
+                                <p className="text-xs sm:text-sm text-[color:var(--color-text-muted)]">
                                     ⏱️ This usually takes 30-60 seconds
                                 </p>
                             </div>
                         </div>
                     ) : (
-                        <h2 className="text-center px-4 text-xl sm:text-2xl lg:text-3xl text-[#A5B4C7] mb-6">Drop your resume for an ATS score and improvement tips</h2>
+                        <h2 className="text-center px-4 text-xl sm:text-2xl lg:text-3xl text-[color:var(--color-text-secondary)] mb-6">Drop your resume for an ATS score and improvement tips</h2>
                     )}
                     {!isProcessing && (
                         <div className="w-full max-w-6xl mx-auto">
                             {/* Premium Progress Indicator - Mobile Responsive */}
                             <div className="flex items-center justify-center mb-6 sm:mb-12">
-                                <div className="glass-effect rounded-lg sm:rounded-xl px-2 sm:px-4 py-2 border border-[#2A3441]/50 w-full max-w-sm sm:max-w-lg">
+                                <div className="glass-effect rounded-lg sm:rounded-xl px-2 sm:px-4 py-2 border border-[color:var(--color-border)]/50 w-full max-w-sm sm:max-w-lg">
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-col items-center gap-1">
                                             <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-[#4F75FF] to-[#FF6B6B] rounded-full flex items-center justify-center shadow-lg">
                                                 <span className="text-white text-xs font-bold">1</span>
                                             </div>
-                                            <span className="text-white font-medium text-xs sm:text-sm text-center leading-tight">Setup<br className="sm:hidden"/>& Upload</span>
+                                            <span className="text-[color:var(--color-text-primary)] font-medium text-xs sm:text-sm text-center leading-tight">Setup<br className="sm:hidden"/>& Upload</span>
                                         </div>
-                                        <div className="flex-1 mx-2 sm:mx-3 h-0.5 bg-gradient-to-r from-[#4F75FF] to-[#2A3441] rounded-full"></div>
+                                        <div className="flex-1 mx-2 sm:mx-3 h-0.5 bg-gradient-to-r from-[#4F75FF] to-[color:var(--color-border)] rounded-full"></div>
                                         <div className="flex flex-col items-center gap-1">
-                                            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#2A3441] rounded-full flex items-center justify-center">
-                                                <span className="text-[#6B7A8F] text-xs font-semibold">2</span>
-                                            </div>
-                                            <span className="text-[#6B7A8F] font-medium text-xs sm:text-sm text-center leading-tight">AI<br className="sm:hidden"/>Analysis</span>
+                                                                                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[color:var(--color-border)] rounded-full flex items-center justify-center">
+                                            <span className="text-[color:var(--color-text-muted)] text-xs font-semibold">2</span>
                                         </div>
-                                        <div className="flex-1 mx-2 sm:mx-3 h-0.5 bg-[#2A3441] rounded-full"></div>
-                                        <div className="flex flex-col items-center gap-1">
-                                            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[#2A3441] rounded-full flex items-center justify-center">
-                                                <span className="text-[#6B7A8F] text-xs font-semibold">3</span>
+                                        <span className="text-[color:var(--color-text-muted)] font-medium text-xs sm:text-sm text-center leading-tight">AI<br className="sm:hidden"/>Analysis</span>
+                                    </div>
+                                    <div className="flex-1 mx-2 sm:mx-3 h-0.5 bg-[color:var(--color-border)] rounded-full"></div>
+                                    <div className="flex flex-col items-center gap-1">
+                                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[color:var(--color-border)] rounded-full flex items-center justify-center">
+                                                <span className="text-[color:var(--color-text-muted)] text-xs font-semibold">3</span>
                                             </div>
-                                            <span className="text-[#6B7A8F] font-medium text-xs sm:text-sm text-center leading-tight">Results</span>
+                                            <span className="text-[color:var(--color-text-muted)] font-medium text-xs sm:text-sm text-center leading-tight">Results</span>
                                         </div>
                                     </div>
                                 </div>
@@ -252,7 +278,7 @@ export default function Upload() {
                                 {/* Desktop Side-by-Side Layout */}
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                                 {/* Job Details Section - Mobile Responsive */}
-                                <div className="glass-effect rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-2xl relative overflow-hidden border border-[#2A3441]/50">
+                                <div className="glass-effect rounded-xl sm:rounded-2xl p-3 sm:p-6 shadow-2xl relative overflow-hidden border border-[color:var(--color-border)]/50">
                                     {/* Decorative background - Hidden on mobile */}
                                     <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-[#4F75FF]/20 to-transparent rounded-full blur-2xl hidden sm:block"></div>
                                     
@@ -264,14 +290,14 @@ export default function Upload() {
                                                 </svg>
                                             </div>
                                             <div className="min-w-0">
-                                                <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-[#A5B4C7] bg-clip-text text-transparent">Job Details</h3>
-                                                <p className="text-[#A5B4C7] text-sm sm:text-lg">Help us provide better, targeted feedback</p>
+                                                <h3 className="text-xl sm:text-2xl font-bold text-[color:var(--color-text-primary)]">Job Details</h3>
+                                                <p className="text-[color:var(--color-text-secondary)] text-sm sm:text-lg">Help us provide better, targeted feedback</p>
                                             </div>
                                         </div>
                                         
                                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
                                             <div className="space-y-2">
-                                                <label htmlFor="company-name" className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 text-white font-medium text-sm sm:text-base">
+                                                <label htmlFor="company-name" className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 text-[color:var(--color-text-primary)] font-medium text-sm sm:text-base">
                                                     <div className="w-5 h-5 sm:w-6 sm:h-6 bg-[#4F75FF]/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                                         <svg className="w-3 h-3 sm:w-4 sm:h-4 text-[#4F75FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -284,11 +310,11 @@ export default function Upload() {
                                                     name="company-name" 
                                                     placeholder="e.g., Google, Microsoft, Apple..." 
                                                     id="company-name"
-                                                    className="w-full p-3 sm:p-4 bg-[#0A0E1A]/60 border border-[#2A3441] rounded-xl text-white placeholder-[#6B7A8F] focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all text-sm sm:text-base"
+                                                    className="w-full p-3 sm:p-4 bg-[color:var(--color-bg-card)]/60 border border-[color:var(--color-border)] rounded-xl text-[color:var(--color-text-primary)] placeholder-[color:var(--color-text-muted)] focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all text-sm sm:text-base"
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label htmlFor="job-title" className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 text-white font-medium text-sm sm:text-base">
+                                                <label htmlFor="job-title" className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 text-[color:var(--color-text-primary)] font-medium text-sm sm:text-base">
                                                     <div className="w-5 h-5 sm:w-6 sm:h-6 bg-[#4F75FF]/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                                         <svg className="w-3 h-3 sm:w-4 sm:h-4 text-[#4F75FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V8a2 2 0 01-2 2H10a2 2 0 01-2-2V6m8 0H8m0 0v-.5A2.5 2.5 0 0110.5 3h3A2.5 2.5 0 0116 5.5V6m-8 0h8" />
@@ -301,13 +327,13 @@ export default function Upload() {
                                                     name="job-title" 
                                                     placeholder="e.g., Software Engineer, Product Manager..." 
                                                     id="job-title"
-                                                    className="w-full p-3 sm:p-4 bg-[#0A0E1A]/60 border border-[#2A3441] rounded-xl text-white placeholder-[#6B7A8F] focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all text-sm sm:text-base"
+                                                    className="w-full p-3 sm:p-4 bg-[color:var(--color-bg-card)]/60 border border-[color:var(--color-border)] rounded-xl text-[color:var(--color-text-primary)] placeholder-[color:var(--color-text-muted)] focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all text-sm sm:text-base"
                                                 />
                                             </div>
                                         </div>
                                         
                                         <div className="mt-6 sm:mt-8 space-y-2">
-                                            <label htmlFor="job-description" className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 text-white font-medium text-sm sm:text-base">
+                                            <label htmlFor="job-description" className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 text-[color:var(--color-text-primary)] font-medium text-sm sm:text-base">
                                                 <div className="w-5 h-5 sm:w-6 sm:h-6 bg-[#4F75FF]/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                                     <svg className="w-3 h-3 sm:w-4 sm:h-4 text-[#4F75FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -320,13 +346,13 @@ export default function Upload() {
                                                 name="job-description" 
                                                 placeholder="Paste the complete job description here for more targeted, accurate feedback..." 
                                                 id="job-description"
-                                                className="w-full p-3 sm:p-4 bg-[#0A0E1A]/60 border border-[#2A3441] rounded-xl text-white placeholder-[#6B7A8F] focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all resize-none text-sm sm:text-base"
+                                                className="w-full p-3 sm:p-4 bg-[color:var(--color-bg-card)]/60 border border-[color:var(--color-border)] rounded-xl text-[color:var(--color-text-primary)] placeholder-[color:var(--color-text-muted)] focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all resize-none text-sm sm:text-base"
                                             />
                                             <div className="flex items-start gap-2 sm:gap-3 mt-3 p-3 bg-[#4F75FF]/10 border border-[#4F75FF]/20 rounded-xl">
                                                 <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#4F75FF] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
-                                                <p className="text-xs sm:text-sm text-[#A5B4C7]">
+                                                <p className="text-xs sm:text-sm text-[color:var(--color-text-secondary)]">
                                                     <span className="text-[#4F75FF] font-medium">Pro tip:</span> Including the job description helps our AI provide specific ATS optimization and keyword suggestions tailored to this role.
                                                 </p>
                                             </div>
@@ -335,7 +361,7 @@ export default function Upload() {
                                 </div>
 
                                 {/* Upload Section - Enhanced Design */}
-                                <div className="bg-gradient-to-br from-[#1E293B]/95 to-[#0F172A]/95 backdrop-blur-xl border border-[#334155]/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl relative overflow-hidden group">
+                                <div className="bg-gradient-to-br from-[color:var(--color-bg-card)]/95 to-[color:var(--color-bg-secondary)]/95 backdrop-blur-xl border border-[color:var(--color-border)]/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl relative overflow-hidden group">
                                     {/* Enhanced Decorative Elements */}
                                     <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#4F75FF]/10 to-[#8B5CF6]/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
                                     <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-[#FF6B6B]/10 to-transparent rounded-full blur-2xl"></div>
@@ -348,12 +374,12 @@ export default function Upload() {
                                                 </svg>
                                             </div>
                                             <div className="min-w-0">
-                                                <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-white via-[#A5B4C7] to-[#4F75FF] bg-clip-text text-transparent">Upload Your Resume</h3>
-                                                <p className="text-[#A5B4C7] text-sm sm:text-base font-medium">PDF format • Maximum 20MB • Secure & private</p>
+                                                <h3 className="text-xl sm:text-2xl font-bold text-[color:var(--color-text-primary)]">Upload Your Resume</h3>
+                                                <p className="text-[color:var(--color-text-secondary)] text-sm sm:text-base font-medium">PDF format • Maximum 20MB • Secure & private</p>
                                             </div>
                                         </div>
                                         
-                                        <div className="relative bg-gradient-to-br from-[#0A0E1A]/60 to-[#1A2332]/60 border-2 border-dashed border-[#4F75FF]/40 rounded-2xl p-4 sm:p-8 hover:border-[#4F75FF]/70 hover:from-[#4F75FF]/5 hover:to-[#8B5CF6]/5 transition-all duration-300 group/upload backdrop-blur-sm">
+                                        <div className="relative bg-gradient-to-br from-[color:var(--color-bg-primary)]/60 to-[color:var(--color-bg-card)]/60 border-2 border-dashed border-[#4F75FF]/40 rounded-2xl p-4 sm:p-8 hover:border-[#4F75FF]/70 hover:from-[#4F75FF]/5 hover:to-[#8B5CF6]/5 transition-all duration-300 group/upload backdrop-blur-sm">
                                             {/* Animated background on hover */}
                                             <div className="absolute inset-0 bg-gradient-to-br from-[#4F75FF]/0 to-[#8B5CF6]/0 group-hover/upload:from-[#4F75FF]/10 group-hover/upload:to-[#8B5CF6]/10 rounded-2xl transition-all duration-500"></div>
                                             <div className="relative z-10">
@@ -370,8 +396,8 @@ export default function Upload() {
                                                         </svg>
                                                     </div>
                                                     <div className="min-w-0">
-                                                        <p className="text-white font-medium text-sm sm:text-base">Ready to analyze!</p>
-                                                        <p className="text-[#A5B4C7] text-xs sm:text-sm">Your resume has been uploaded successfully</p>
+                                                        <p className="text-[color:var(--color-text-primary)] font-medium text-sm sm:text-base">Ready to analyze!</p>
+                                                        <p className="text-[color:var(--color-text-secondary)] text-xs sm:text-sm">Your resume has been uploaded successfully</p>
                                                     </div>
                                                 </div>
                                             </div>

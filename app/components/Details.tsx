@@ -10,7 +10,7 @@ const ScoreBadge = ({ score }: { score: number }) => {
       : { bg: 'bg-[#FF6B6B]/20', text: 'text-[#FF6B6B]', icon: 'text-[#FF6B6B]' };
 
   return (
-      <div className={`flex flex-row gap-1 items-center px-3 py-1 rounded-full border border-[#2A3441]/30 ${colorScheme.bg}`}>
+      <div className={`flex flex-row gap-1 items-center px-3 py-1 rounded-full border border-[color:var(--color-border)]/30 ${colorScheme.bg}`}>
         {score > 69 ? (
           <svg className={`w-4 h-4 ${colorScheme.icon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -36,7 +36,7 @@ const CategoryHeader = ({
 }) => {
   return (
       <div className="flex flex-row gap-4 items-center py-2">
-        <p className="text-2xl font-semibold text-white">{title}</p>
+        <p className="text-2xl font-semibold text-[color:var(--color-text-primary)]">{title}</p>
         <ScoreBadge score={categoryScore} />
       </div>
   );
@@ -49,7 +49,7 @@ const CategoryContent = ({
 }) => {
   return (
       <div className="flex flex-col gap-4 items-center w-full">
-        <div className="bg-[#0A0E1A]/40 border border-[#2A3441]/30 w-full rounded-lg px-5 py-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-[color:var(--color-bg-primary)]/40 border border-[color:var(--color-border)]/30 w-full rounded-lg px-5 py-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           {tips.map((tip, index) => (
               <div className="flex flex-row gap-3 items-center" key={index}>
                 {tip.type === "good" ? (
@@ -61,7 +61,7 @@ const CategoryContent = ({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 )}
-                <p className="text-base text-[#A5B4C7]">{tip.tip}</p>
+                <p className="text-base text-[color:var(--color-text-secondary)]">{tip.tip}</p>
               </div>
           ))}
         </div>
@@ -91,7 +91,7 @@ const CategoryContent = ({
                     tip.type === "good" ? "text-[#00D4AA]" : "text-[#FFB347]"
                   )}>{tip.tip}</p>
                 </div>
-                <p className="text-[#A5B4C7] leading-relaxed">{tip.explanation}</p>
+                <p className="text-[color:var(--color-text-secondary)] leading-relaxed">{tip.explanation}</p>
               </div>
           ))}
         </div>
@@ -101,10 +101,10 @@ const CategoryContent = ({
 
 const Details = ({ feedback }: { feedback: Feedback }) => {
   return (
-      <div className="glass-effect rounded-2xl shadow-2xl w-full p-6 border border-[#2A3441]/50">
+      <div className="glass-effect rounded-2xl shadow-2xl w-full p-6 border border-[color:var(--color-border)]/50">
         <div className="mb-6">
-          <h3 className="text-2xl font-bold text-white mb-2">Detailed Feedback</h3>
-          <p className="text-[#A5B4C7]">Expand each section to see specific recommendations and tips.</p>
+          <h3 className="text-2xl font-bold text-[color:var(--color-text-primary)] mb-2">Detailed Feedback</h3>
+          <p className="text-[color:var(--color-text-secondary)]">Expand each section to see specific recommendations and tips.</p>
         </div>
         <Accordion>
           <AccordionItem id="tone-style">

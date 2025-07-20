@@ -53,19 +53,19 @@ const Resume = () => {
     return (
         <main className="min-h-screen with-navbar">
             <nav className="fixed top-4 left-4 right-4 z-40">
-                <div className="glass-effect rounded-2xl px-6 py-4 max-w-7xl mx-auto border border-[#2A3441]/50">
+                <div className="glass-effect rounded-2xl px-6 py-4 max-w-7xl mx-auto border border-[color:var(--color-border)]/50">
                     <Link to="/" className="back-button">
-                        <svg className="w-4 h-4 text-[#A5B4C7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[color:var(--color-text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                         </svg>
-                        <span className="text-[#A5B4C7] text-sm font-semibold">Back to Homepage</span>
+                        <span className="text-[color:var(--color-text-secondary)] text-sm font-semibold">Back to Homepage</span>
                     </Link>
                 </div>
             </nav>
             <div className="flex flex-row w-full max-lg:flex-col-reverse pt-8">
                 <section className="w-1/2 max-lg:w-full px-8 max-lg:px-4 py-6 flex items-center justify-center sticky top-24 h-[calc(100vh-6rem)]">
                     {imageUrl && resumeUrl && (
-                        <div className="animate-in fade-in duration-1000 glass-effect max-sm:m-0 h-full w-full p-4 rounded-3xl border border-[#2A3441]/50">
+                        <div className="animate-in fade-in duration-1000 glass-effect max-sm:m-0 h-full w-full p-4 rounded-3xl border border-[color:var(--color-border)]/50">
                             <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
                                 <img
                                     src={imageUrl}
@@ -78,8 +78,8 @@ const Resume = () => {
                 </section>
                 <section className="w-1/2 max-lg:w-full px-8 max-lg:px-4 py-6">
                     <div className="mb-8">
-                        <h2 className="text-4xl font-bold text-white mb-2">Resume Review</h2>
-                        <p className="text-[#A5B4C7] text-lg">Detailed analysis and recommendations for your resume</p>
+                        <h2 className="text-4xl font-bold text-[color:var(--color-text-primary)] mb-2">Resume Review</h2>
+                        <p className="text-[color:var(--color-text-secondary)] text-lg">Detailed analysis and recommendations for your resume</p>
                     </div>
                     {feedback ? (
                         <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
@@ -90,7 +90,7 @@ const Resume = () => {
                     ) : (
                         <div className="flex flex-col items-center justify-center py-16">
                             <img src="/images/resume-scan-2.gif" className="w-64 mb-4" />
-                            <p className="text-[#A5B4C7] text-lg">Loading your resume analysis...</p>
+                            <p className="text-[color:var(--color-text-secondary)] text-lg">Loading your resume analysis...</p>
                         </div>
                     )}
                 </section>

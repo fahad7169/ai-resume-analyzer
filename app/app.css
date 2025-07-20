@@ -6,16 +6,38 @@
   --font-sans: "Mona Sans", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   
-  /* Enhanced Dark theme colors with better harmony */
-  --color-bg-primary: #0A0E1A;
-  --color-bg-secondary: #162032;
-  --color-bg-card: #1A2332;
-  --color-bg-elevated: #222B3D;
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #A5B4C7;
-  --color-text-muted: #6B7A8F;
-  --color-border: #2A3441;
-  --color-border-light: #374151;
+  /* Dark theme colors */
+  --color-bg-primary-dark: #0A0E1A;
+  --color-bg-secondary-dark: #162032;
+  --color-bg-card-dark: #1A2332;
+  --color-bg-elevated-dark: #222B3D;
+  --color-text-primary-dark: #FFFFFF;
+  --color-text-secondary-dark: #A5B4C7;
+  --color-text-muted-dark: #6B7A8F;
+  --color-border-dark: #2A3441;
+  --color-border-light-dark: #374151;
+  
+  /* Light theme colors */
+  --color-bg-primary-light: #FEFEFE;
+  --color-bg-secondary-light: #F8F9FA;
+  --color-bg-card-light: #FEFEFE;
+  --color-bg-elevated-light: #F3F4F6;
+  --color-text-primary-light: #1F2937;
+  --color-text-secondary-light: #4B5563;
+  --color-text-muted-light: #6B7280;
+  --color-border-light: #E5E7EB;
+  --color-border-light-light: #D1D5DB;
+  
+  /* Theme-aware color variables */
+  --color-bg-primary: var(--color-bg-primary-dark);
+  --color-bg-secondary: var(--color-bg-secondary-dark);
+  --color-bg-card: var(--color-bg-card-dark);
+  --color-bg-elevated: var(--color-bg-elevated-dark);
+  --color-text-primary: var(--color-text-primary-dark);
+  --color-text-secondary: var(--color-text-secondary-dark);
+  --color-text-muted: var(--color-text-muted-dark);
+  --color-border: var(--color-border-dark);
+  --color-border-light: var(--color-border-light-dark);
   
   /* Primary color palette - Cool blues with better saturation */
   --color-accent: #4F75FF;
@@ -33,11 +55,14 @@
   
   /* Success/Warning/Error with better harmony */
   --color-success: #00D4AA;
-  --color-success-bg: #001F1A;
+  --color-success-bg-dark: #001F1A;
+  --color-success-bg-light: #ECFDF5;
   --color-warning: #FFB347;
-  --color-warning-bg: #1F1609;
+  --color-warning-bg-dark: #1F1609;
+  --color-warning-bg-light: #FFFBEB;
   --color-error: #FF6B6B;
-  --color-error-bg: #1F0E0E;
+  --color-error-bg-dark: #1F0E0E;
+  --color-error-bg-light: #FEF2F2;
   
   /* Legacy colors */
   --color-dark-200: #475467;
@@ -53,10 +78,29 @@
   --color-badge-yellow-text: #73321b;
 }
 
+/* Light theme overrides */
+.light {
+  --color-bg-primary: var(--color-bg-primary-light);
+  --color-bg-secondary: var(--color-bg-secondary-light);
+  --color-bg-card: var(--color-bg-card-light);
+  --color-bg-elevated: var(--color-bg-elevated-light);
+  --color-text-primary: var(--color-text-primary-light);
+  --color-text-secondary: var(--color-text-secondary-light);
+  --color-text-muted: var(--color-text-muted-light);
+  --color-border: var(--color-border-light);
+  --color-border-light: var(--color-border-light-light);
+}
+
 html,
 body {
   @apply bg-gradient-to-br from-[#0A0E1A] via-[#0F1419] to-[#162032] text-white;
   background-attachment: fixed;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.light html,
+.light body {
+  @apply bg-gradient-to-br from-[#FEFEFE] via-[#F8F9FA] to-[#F3F4F6] text-[#1F2937];
 }
 
 main {
@@ -78,14 +122,32 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  transition: background 0.3s ease;
+}
+
+.light h1 {
+  background: linear-gradient(135deg, #1F2937 0%, #4B5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 h2 {
   @apply max-sm:text-xl text-3xl text-[#A5B4C7];
+  transition: color 0.3s ease;
+}
+
+.light h2 {
+  @apply text-[#4B5563];
 }
 
 label {
   @apply text-[#A5B4C7];
+  transition: color 0.3s ease;
+}
+
+.light label {
+  @apply text-[#4B5563];
 }
 
 input {
@@ -93,9 +155,19 @@ input {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+.light input {
+  @apply bg-[#FEFEFE]/80 border-[#E5E7EB] text-[#1F2937] focus:border-[#4F75FF] focus:ring-[#4F75FF]/20;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
 textarea {
   @apply w-full p-4 rounded-2xl focus:outline-none bg-[#1A2332]/80 backdrop-blur-sm border border-[#2A3441] text-white focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all duration-200;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.light textarea {
+  @apply bg-[#FEFEFE]/80 border-[#E5E7EB] text-[#1F2937] focus:border-[#4F75FF] focus:ring-[#4F75FF]/20;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 form {
@@ -117,6 +189,13 @@ form {
     @apply bg-gradient-to-br from-[#1A2332] to-[#222B3D] border border-[#2A3441] p-4 rounded-2xl;
     background: linear-gradient(135deg, #1A2332 0%, #222B3D 100%);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+  
+  .light .gradient-border {
+    @apply from-[#FEFEFE] to-[#F8F9FA] border-[#E5E7EB];
+    background: linear-gradient(135deg, #FEFEFE 0%, #F8F9FA 100%);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
   }
   
   .primary-button {
@@ -163,6 +242,17 @@ form {
     background: linear-gradient(135deg, #1A2332 0%, #222B3D 100%);
   }
   
+  .light .back-button {
+    @apply text-[#4B5563] hover:text-[#1F2937];
+    background: linear-gradient(135deg, #FEFEFE/80 0%, #F8F9FA/80 100%);
+    border-color: #E5E7EB;
+  }
+  
+  .light .back-button:hover {
+    border-color: #4F75FF;
+    background: linear-gradient(135deg, #FEFEFE 0%, #F8F9FA 100%);
+  }
+  
   .auth-button {
     @apply rounded-xl py-4 px-8 cursor-pointer w-full max-w-md sm:max-w-lg md:max-w-xl lg:w-[600px] text-lg sm:text-xl md:text-2xl font-semibold text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98];
     background: linear-gradient(135deg, #4F75FF 0%, #FF6B6B 50%, #FFB347 100%);
@@ -194,6 +284,17 @@ form {
     box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.2);
   }
   
+  .light .resume-card {
+    background: linear-gradient(135deg, #FEFEFE/80 0%, #F8F9FA/80 100%);
+    border-color: #E5E7EB;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .light .resume-card:hover {
+    border-color: #4F75FF;
+    box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.15);
+  }
+  
   .resume-card-header {
     @apply p-6 pb-4;
   }
@@ -210,6 +311,17 @@ form {
     box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.2);
   }
 
+  .light .resume-card {
+    background: linear-gradient(135deg, #FEFEFE/90 0%, #F8F9FA/90 100%);
+    border-color: #E5E7EB;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+  }
+
+  .light .resume-card:hover {
+    border-color: #4F75FF;
+    box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.15);
+  }
+
   .resume-card-header {
     @apply flex flex-row gap-2 justify-between min-h-[110px] max-sm:flex-col items-center max-md:justify-center max-md:items-center;
   }
@@ -222,6 +334,12 @@ form {
     @apply flex flex-row justify-between items-center backdrop-blur-xl border rounded-2xl p-4 w-full px-10 max-w-[1200px] mx-auto shadow-2xl;
     background: linear-gradient(135deg, #1A2332/80 0%, #222B3D/80 100%);
     border-color: #2A3441;
+    transition: all 0.3s ease;
+  }
+
+  .light .navbar {
+    background: linear-gradient(135deg, #FEFEFE/80 0%, #F8F9FA/80 100%);
+    border-color: #E5E7EB;
   }
 
   .score-badge {
@@ -240,6 +358,12 @@ form {
     @apply flex items-center justify-between p-3 rounded-2xl backdrop-blur-sm;
     background: linear-gradient(135deg, #1A2332 0%, #222B3D 100%);
     border: 1px solid #2A3441;
+    transition: all 0.3s ease;
+  }
+  
+  .light .uploader-selected-file {
+    background: linear-gradient(135deg, #FEFEFE 0%, #F8F9FA 100%);
+    border: 1px solid #E5E7EB;
   }
   
   .feature-card {
@@ -254,18 +378,35 @@ form {
     box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.2);
   }
   
+  .light .feature-card {
+    background: linear-gradient(135deg, #FEFEFE/80 0%, #F8F9FA/80 100%);
+    border-color: #E5E7EB;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .light .feature-card:hover {
+    border-color: #4F75FF;
+    box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.15);
+  }
+  
   .stats-card {
     @apply backdrop-blur-xl border rounded-xl p-6 text-center transition-all duration-300 hover:scale-[1.02];
     background: linear-gradient(135deg, #1A2332/50 0%, #222B3D/50 100%);
     border-color: #2A3441;
+    transition: all 0.3s ease;
   }
   
   .stats-card:hover {
     border-color: #4F75FF;
   }
 
+  .light .stats-card {
+    background: linear-gradient(135deg, #FEFEFE/50 0%, #F8F9FA/50 100%);
+    border-color: #E5E7EB;
+  }
+
   .auth-container {
-    @apply flex items-start justify-center px-4 py-4 sm:py-8 lg:py-12 min-h-screen;
+    @apply flex items-start justify-center px-4 min-h-screen;
   }
 
   .auth-content {
@@ -278,6 +419,11 @@ form {
 
   .auth-card {
     @apply bg-[#1E293B]/90 backdrop-blur-lg border border-[#334155] rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl;
+    transition: all 0.3s ease;
+  }
+
+  .light .auth-card {
+    @apply bg-[#FEFEFE]/90 border-[#E5E7EB];
   }
 }
 
@@ -292,6 +438,10 @@ form {
 
 @utility gradient-hover {
   background: linear-gradient(135deg, #2A3441/20 0%, #4F75FF/10 100%);
+}
+
+.light .gradient-hover {
+  background: linear-gradient(135deg, #E5E7EB/20 0%, #4F75FF/10 100%);
 }
 
 @utility primary-gradient {
@@ -340,6 +490,13 @@ form {
   backdrop-filter: blur(20px);
   border: 1px solid rgba(42, 52, 65, 0.5);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.light .glass-effect {
+  background: linear-gradient(135deg, rgba(254, 254, 254, 0.9) 0%, rgba(248, 249, 250, 0.9) 100%);
+  border: 1px solid rgba(229, 231, 235, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
 }
 
 @keyframes fadeIn {

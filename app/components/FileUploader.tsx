@@ -46,11 +46,11 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
                                     </svg>
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-sm sm:text-base font-semibold text-white truncate">
+                                    <p className="text-sm sm:text-base font-semibold text-[color:var(--color-text-primary)] truncate">
                                         {file.name}
                                     </p>
                                     <div className="flex items-center gap-3 mt-1">
-                                        <p className="text-xs sm:text-sm text-[#A5B4C7] font-medium">
+                                        <p className="text-xs sm:text-sm text-[color:var(--color-text-secondary)] font-medium">
                                             {formatSize(file.size)}
                                         </p>
                                         <div className="flex items-center gap-1">
@@ -81,12 +81,12 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
                                 </svg>
                             </div>
                             <div className="space-y-2">
-                                <p className="text-lg sm:text-xl text-[#A5B4C7] font-medium">
-                                    <span className="font-bold text-white bg-gradient-to-r from-[#4F75FF] to-[#8B5CF6] bg-clip-text text-transparent">
+                                <p className="text-lg sm:text-xl text-[color:var(--color-text-secondary)] font-medium">
+                                    <span className="font-bold text-[#4F75FF]">
                                         Click to upload
                                     </span> or drag and drop
                                 </p>
-                                <p className="text-sm sm:text-base text-[#6B7A8F] font-medium">PDF files only • Maximum {formatSize(maxFileSize)}</p>
+                                <p className="text-sm sm:text-base text-[color:var(--color-text-muted)] font-medium">PDF files only • Maximum {formatSize(maxFileSize)}</p>
                                 <div className="flex items-center justify-center gap-2 mt-3">
                                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                                     <span className="text-xs text-green-400 font-medium">Secure & encrypted upload</span>

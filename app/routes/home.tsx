@@ -13,14 +13,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  const { auth, kv } = usePuterStore();
+  const { auth, isLoading, kv } = usePuterStore();
   const navigate = useNavigate();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loadingResumes, setLoadingResumes] = useState(false);
 
   useEffect(() => {
-    // Only load resumes if user is authenticated
-    if (!auth.isAuthenticated) {
+    // Only load resumes if user is authenticated and not in initial loading state
+    if (!auth.isAuthenticated || isLoading) {
       setLoadingResumes(false);
       setResumes([]);
       return;
@@ -46,11 +46,28 @@ export default function Home() {
     }
 
     loadResumes()
-  }, [auth.isAuthenticated]);
+  }, [auth.isAuthenticated, isLoading]);
 
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <main className="min-h-screen with-navbar">
+        <Navbar />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-[#4F75FF] to-[#FF6B6B] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <p className="text-[color:var(--color-text-secondary)]">Loading...</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
-
-  return <main className="bg-[#0F172A] min-h-screen with-navbar">
+  return <main className="min-h-screen with-navbar">
     <Navbar />
 
     {/* Hero Section */}
@@ -58,10 +75,11 @@ export default function Home() {
       {/* Hero Content */}
    
 
-      {/* Loading State */}
-      {loadingResumes && auth.isAuthenticated && (
+      {/* Loading State for Resumes */}
+      {auth.isAuthenticated && loadingResumes && (
         <div className="flex flex-col items-center justify-center my-16">
           <img src="/images/resume-scan-2.gif" className="w-[200px]" alt="Loading..." />
+          <p className="text-[color:var(--color-text-secondary)] mt-4">Loading your resumes...</p>
         </div>
       )}
 
@@ -76,44 +94,44 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-white">Your Analyzed Resumes</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)]">Your Analyzed Resumes</h2>
             </div>
             
-            <p className="text-[#A5B4C7] text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[color:var(--color-text-secondary)] text-base md:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
               Review your previously analyzed resumes and track your progress. Click on any resume to view detailed feedback and recommendations.
             </p>
 
             {/* Stats Bar */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 mb-10">
               <div className="text-center px-4">
-                <div className="text-2xl md:text-3xl font-bold text-white">{resumes.length}</div>
-                <div className="text-sm text-[#A5B4C7]">Total Analyzed</div>
+                <div className="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)]">{resumes.length}</div>
+                <div className="text-sm text-[color:var(--color-text-secondary)]">Total Analyzed</div>
               </div>
-              <div className="hidden sm:block w-px h-12 bg-[#2A3441]"></div>
+              <div className="hidden sm:block w-px h-12 bg-[color:var(--color-border)]"></div>
               <div className="text-center px-4">
                 <div className="text-2xl md:text-3xl font-bold text-[#4F75FF]">
                   {Math.round(resumes.reduce((acc, resume) => acc + (resume.feedback?.overallScore || 0), 0) / resumes.length) || 0}
                 </div>
-                <div className="text-sm text-[#A5B4C7]">Avg. Score</div>
+                <div className="text-sm text-[color:var(--color-text-secondary)]">Avg. Score</div>
               </div>
-              <div className="hidden sm:block w-px h-12 bg-[#2A3441]"></div>
+              <div className="hidden sm:block w-px h-12 bg-[color:var(--color-border)]"></div>
               <div className="text-center px-4">
                 <div className="text-2xl md:text-3xl font-bold text-[#00D4AA]">
                   {resumes.filter(resume => (resume.feedback?.overallScore || 0) >= 70).length}
                 </div>
-                <div className="text-sm text-[#A5B4C7]">Good Score</div>
+                <div className="text-sm text-[color:var(--color-text-secondary)]">Good Score</div>
               </div>
             </div>
           </div>
 
           {/* Action Bar */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-10 p-4 glass-effect rounded-xl border border-[#2A3441]/50 max-w-4xl mx-auto">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-10 p-4 glass-effect rounded-xl border border-[#2A3441]/50 dark:border-[#2A3441]/50 light:border-[#E5E7EB]/50 max-w-4xl mx-auto">
             <div className="flex items-center gap-3">
-              <svg className="w-5 h-5 text-[#A5B4C7] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-[color:var(--color-text-secondary)] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="text-[#A5B4C7] text-sm">
-                <span className="text-white font-medium">Tip:</span> Compare different versions to see your improvement over time
+              <span className="text-[color:var(--color-text-secondary)] text-sm">
+                <span className="text-[color:var(--color-text-primary)] font-medium">Tip:</span> Compare different versions to see your improvement over time
               </span>
             </div>
             <Link 
@@ -147,8 +165,8 @@ export default function Home() {
           </div>
           
           <div className="mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">Ready to get started?</h3>
-            <p className="text-[#A5B4C7] text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            <h3 className="text-2xl md:text-3xl font-bold text-[color:var(--color-text-primary)] mb-6">Ready to get started?</h3>
+            <p className="text-[color:var(--color-text-secondary)] text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
               {auth.isAuthenticated 
                 ? "Upload your first resume to get instant AI-powered feedback, ATS optimization tips, and personalized suggestions to help you land your dream job."
                 : "Sign up and upload your resume to get instant AI-powered feedback, ATS optimization tips, and personalized suggestions to help you land your dream job."
@@ -181,8 +199,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h4 className="font-semibold text-white mb-2">Instant Analysis</h4>
-              <p className="text-sm text-[#A5B4C7]">Get feedback in seconds</p>
+              <h4 className="font-semibold text-[color:var(--color-text-primary)] mb-2">Instant Analysis</h4>
+              <p className="text-sm text-[color:var(--color-text-secondary)]">Get feedback in seconds</p>
             </div>
             
             <div className="stats-card group hover:border-[#00D4AA]/50">
@@ -191,8 +209,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h4 className="font-semibold text-white mb-2">ATS Optimized</h4>
-              <p className="text-sm text-[#A5B4C7]">Beat applicant tracking systems</p>
+              <h4 className="font-semibold text-[color:var(--color-text-primary)] mb-2">ATS Optimized</h4>
+              <p className="text-sm text-[color:var(--color-text-secondary)]">Beat applicant tracking systems</p>
             </div>
             
             <div className="stats-card group hover:border-[#FFB347]/50">
@@ -201,8 +219,8 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h4 className="font-semibold text-white mb-2">Track Progress</h4>
-              <p className="text-sm text-[#A5B4C7]">Monitor all applications</p>
+              <h4 className="font-semibold text-[color:var(--color-text-primary)] mb-2">Track Progress</h4>
+              <p className="text-sm text-[color:var(--color-text-secondary)]">Monitor all applications</p>
             </div>
           </div>
         </div>
@@ -221,8 +239,8 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-4">Lightning Fast Analysis</h3>
-            <p className="text-[#A5B4C7] leading-relaxed">
+            <h3 className="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">Lightning Fast Analysis</h3>
+            <p className="text-[color:var(--color-text-secondary)] leading-relaxed">
               Get instant AI-powered resume feedback in seconds with our advanced analysis engine. No waiting required.
             </p>
           </div>
@@ -234,8 +252,8 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-4">Ease of use</h3>
-            <p className="text-[#A5B4C7] leading-relaxed">
+            <h3 className="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">Ease of use</h3>
+            <p className="text-[color:var(--color-text-secondary)] leading-relaxed">
               Intuitive interface that makes resume analysis as simple as drag and drop. Perfect for job seekers of all levels.
             </p>
           </div>
@@ -247,8 +265,8 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-4">ATS Optimization</h3>
-            <p className="text-[#A5B4C7] leading-relaxed">
+            <h3 className="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">ATS Optimization</h3>
+            <p className="text-[color:var(--color-text-secondary)] leading-relaxed">
               Our transparent scoring helps optimize your resume for Applicant Tracking Systems used by top companies.
             </p>
           </div>
@@ -260,8 +278,8 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-4">99.9% Accuracy guarantee</h3>
-            <p className="text-[#A5B4C7] leading-relaxed">
+            <h3 className="text-xl font-semibold text-[color:var(--color-text-primary)] mb-4">99.9% Accuracy guarantee</h3>
+            <p className="text-[color:var(--color-text-secondary)] leading-relaxed">
               Rock-solid AI infrastructure that keeps your resume analysis flowing 24/7 with industry-leading precision.
             </p>
           </div>
