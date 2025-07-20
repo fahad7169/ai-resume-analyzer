@@ -5,6 +5,41 @@
 @theme {
   --font-sans: "Mona Sans", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
+  /* Enhanced Dark theme colors with better harmony */
+  --color-bg-primary: #0A0E1A;
+  --color-bg-secondary: #162032;
+  --color-bg-card: #1A2332;
+  --color-bg-elevated: #222B3D;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A5B4C7;
+  --color-text-muted: #6B7A8F;
+  --color-border: #2A3441;
+  --color-border-light: #374151;
+  
+  /* Primary color palette - Cool blues with better saturation */
+  --color-accent: #4F75FF;
+  --color-accent-hover: #3B5FFF;
+  --color-accent-light: #667EFF;
+  
+  /* Secondary color palette - Warm complementary colors */
+  --color-secondary: #FF6B6B;
+  --color-secondary-hover: #FF5252;
+  --color-secondary-light: #FF8A80;
+  
+  /* Tertiary colors - Warm accents */
+  --color-tertiary: #FFB347;
+  --color-tertiary-hover: #FFA726;
+  
+  /* Success/Warning/Error with better harmony */
+  --color-success: #00D4AA;
+  --color-success-bg: #001F1A;
+  --color-warning: #FFB347;
+  --color-warning-bg: #1F1609;
+  --color-error: #FF6B6B;
+  --color-error-bg: #1F0E0E;
+  
+  /* Legacy colors */
   --color-dark-200: #475467;
   --color-light-blue-100: #c1d3f81a;
   --color-light-blue-200: #a7bff14d;
@@ -20,29 +55,47 @@
 
 html,
 body {
-  @apply bg-white;
+  @apply bg-gradient-to-br from-[#0A0E1A] via-[#0F1419] to-[#162032] text-white;
+  background-attachment: fixed;
 }
 
 main {
-  @apply min-h-screen pt-10;
+  @apply min-h-screen;
+  background: transparent;
 }
+
+main.with-navbar {
+  @apply pt-24;
+}
+
+main.without-navbar {
+  @apply pt-0;
+}
+
 h1 {
-  @apply max-sm:text-[3rem] text-6xl  text-gradient leading-tight xl:tracking-[-2px] font-semibold;
+  @apply max-sm:text-[3rem] text-6xl text-white leading-tight xl:tracking-[-2px] font-semibold;
+  background: linear-gradient(135deg, #FFFFFF 0%, #A5B4C7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 h2 {
-  @apply max-sm:text-xl text-3xl text-dark-200;
+  @apply max-sm:text-xl text-3xl text-[#A5B4C7];
 }
 
 label {
-  @apply text-dark-200;
+  @apply text-[#A5B4C7];
 }
+
 input {
-  @apply w-full p-4 inset-shadow rounded-2xl focus:outline-none bg-white;
+  @apply w-full p-4 rounded-2xl focus:outline-none bg-[#1A2332]/80 backdrop-blur-sm border border-[#2A3441] text-white focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all duration-200;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 textarea {
-  @apply w-full p-4 inset-shadow rounded-2xl focus:outline-none bg-white;
+  @apply w-full p-4 rounded-2xl focus:outline-none bg-[#1A2332]/80 backdrop-blur-sm border border-[#2A3441] text-white focus:border-[#4F75FF] focus:ring-2 focus:ring-[#4F75FF]/20 transition-all duration-200;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 form {
@@ -51,41 +104,110 @@ form {
 
 @layer components {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5];
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(135deg, #4F75FF 0%, #FF6B6B 50%, #FFB347 100%);
   }
+  
+  .text-gradient-success {
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(135deg, #4F75FF 0%, #00D4AA 100%);
+  }
+  
   .gradient-border {
-    @apply bg-gradient-to-b from-light-blue-100 to-light-blue-200 p-4 rounded-2xl;
+    @apply bg-gradient-to-br from-[#1A2332] to-[#222B3D] border border-[#2A3441] p-4 rounded-2xl;
+    background: linear-gradient(135deg, #1A2332 0%, #222B3D 100%);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
+  
   .primary-button {
-    @apply primary-gradient text-white rounded-full px-4 py-2 cursor-pointer w-full;
+    @apply text-white rounded-xl px-6 py-3 cursor-pointer font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98];
+    background: linear-gradient(135deg, #4F75FF 0%, #3B5FFF 100%);
+    box-shadow: 0 4px 14px 0 rgba(79, 117, 255, 0.3);
   }
+  
+  .primary-button:hover {
+    background: linear-gradient(135deg, #3B5FFF 0%, #2952FF 100%);
+    box-shadow: 0 8px 25px 0 rgba(79, 117, 255, 0.4);
+  }
+  
+  .secondary-button {
+    @apply text-white rounded-xl px-6 py-3 cursor-pointer font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98];
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
+    box-shadow: 0 4px 14px 0 rgba(255, 107, 107, 0.3);
+  }
+  
+  .secondary-button:hover {
+    background: linear-gradient(135deg, #FF5252 0%, #FF4444 100%);
+    box-shadow: 0 8px 25px 0 rgba(255, 107, 107, 0.4);
+  }
+  
   .resume-nav {
     @apply flex flex-row justify-between items-center p-4 border-b border-gray-200;
   }
+  
   .resume-summary {
     @apply flex flex-row items-center justify-center p-4 gap-4;
     .category {
       @apply flex flex-row gap-2 items-center bg-gray-50 rounded-2xl p-4 w-full justify-between;
     }
   }
+  
   .back-button {
-    @apply flex flex-row items-center gap-2 border border-gray-200 rounded-lg p-2 shadow-sm;
+    @apply flex flex-row items-center gap-2 backdrop-blur-xl border rounded-xl px-4 py-2 text-[#A5B4C7] hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl;
+    background: linear-gradient(135deg, #1A2332/80 0%, #222B3D/80 100%);
+    border-color: #2A3441;
   }
+  
+  .back-button:hover {
+    border-color: #4F75FF;
+    background: linear-gradient(135deg, #1A2332 0%, #222B3D 100%);
+  }
+  
   .auth-button {
-    @apply primary-gradient rounded-full py-4 px-8 cursor-pointer w-[600px] max-md:w-full text-3xl font-semibold text-white;
+    @apply rounded-xl py-4 px-8 cursor-pointer w-full max-w-md sm:max-w-lg md:max-w-xl lg:w-[600px] text-lg sm:text-xl md:text-2xl font-semibold text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98];
+    background: linear-gradient(135deg, #4F75FF 0%, #FF6B6B 50%, #FFB347 100%);
+    box-shadow: 0 8px 32px 0 rgba(79, 117, 255, 0.4);
   }
+  
+  .auth-button:hover {
+    box-shadow: 0 12px 40px 0 rgba(79, 117, 255, 0.5);
+    transform: translateY(-2px);
+  }
+  
   .main-section {
-    @apply flex flex-col items-center gap-8 pt-12 max-sm:mx-2 mx-15 pb-5;
+    @apply flex flex-col items-center gap-6 sm:gap-8 pt-6 sm:pt-12 px-4 sm:px-8 mx-auto pb-5 max-w-7xl;
   }
+  
   .page-heading {
     @apply flex flex-col items-center gap-8 max-w-4xl text-center max-sm:gap-4;
   }
-  .resumes-section {
-    @apply flex flex-wrap max-md:flex-col max-md:gap-4 gap-6 items-start max-md:items-center w-full max-w-[1850px] justify-evenly;
+  
+  .resume-card {
+    @apply backdrop-blur-xl border rounded-2xl transition-all duration-300 hover:scale-[1.02] cursor-pointer overflow-hidden w-full h-auto;
+    background: linear-gradient(135deg, #1A2332/80 0%, #222B3D/80 100%);
+    border-color: #2A3441;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .resume-card:hover {
+    border-color: #4F75FF;
+    box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.2);
+  }
+  
+  .resume-card-header {
+    @apply p-6 pb-4;
   }
 
   .resume-card {
-    @apply flex flex-col gap-8 h-[560px] w-[350px] lg:w-[430px] xl:w-[490px] bg-white rounded-2xl p-4;
+    @apply flex flex-col gap-8 h-[560px] w-[350px] lg:w-[430px] xl:w-[490px] rounded-2xl p-4 backdrop-blur-xl border transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl;
+    background: linear-gradient(135deg, #1A2332/90 0%, #222B3D/90 100%);
+    border-color: #2A3441;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .resume-card:hover {
+    border-color: #4F75FF;
+    box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.2);
   }
 
   .resume-card-header {
@@ -97,7 +219,9 @@ form {
   }
 
   .navbar {
-    @apply flex flex-row justify-between items-center bg-white rounded-full p-4 w-full px-10 max-w-[1200px] mx-auto;
+    @apply flex flex-row justify-between items-center backdrop-blur-xl border rounded-2xl p-4 w-full px-10 max-w-[1200px] mx-auto shadow-2xl;
+    background: linear-gradient(135deg, #1A2332/80 0%, #222B3D/80 100%);
+    border-color: #2A3441;
   }
 
   .score-badge {
@@ -111,35 +235,111 @@ form {
   .uplader-drag-area {
     @apply relative p-8 text-center transition-all duration-700 cursor-pointer bg-white rounded-2xl min-h-[208px];
   }
+  
   .uploader-selected-file {
-    @apply flex items-center justify-between p-3 bg-gray-50 rounded-2xl;
+    @apply flex items-center justify-between p-3 rounded-2xl backdrop-blur-sm;
+    background: linear-gradient(135deg, #1A2332 0%, #222B3D 100%);
+    border: 1px solid #2A3441;
+  }
+  
+  .feature-card {
+    @apply backdrop-blur-xl border rounded-2xl p-8 transition-all duration-300 hover:scale-[1.02];
+    background: linear-gradient(135deg, #1A2332/80 0%, #222B3D/80 100%);
+    border-color: #2A3441;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feature-card:hover {
+    border-color: #4F75FF;
+    box-shadow: 0 20px 40px -5px rgba(79, 117, 255, 0.2);
+  }
+  
+  .stats-card {
+    @apply backdrop-blur-xl border rounded-xl p-6 text-center transition-all duration-300 hover:scale-[1.02];
+    background: linear-gradient(135deg, #1A2332/50 0%, #222B3D/50 100%);
+    border-color: #2A3441;
+  }
+  
+  .stats-card:hover {
+    border-color: #4F75FF;
+  }
+
+  .auth-container {
+    @apply flex items-start justify-center px-4 py-4 sm:py-8 lg:py-12 min-h-screen;
+  }
+
+  .auth-content {
+    @apply w-full max-w-sm sm:max-w-md;
+  }
+
+  .auth-hero {
+    @apply text-center mb-4 sm:mb-6 lg:mb-8;
+  }
+
+  .auth-card {
+    @apply bg-[#1E293B]/90 backdrop-blur-lg border border-[#334155] rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl;
   }
 }
 
 @utility bg-gradient {
-  background: linear-gradient(to bottom, #f0f4ff 60%, #fa7185cc);
+  background: linear-gradient(135deg, #4F75FF 0%, #FF6B6B 50%, #FFB347 100%);
 }
 
 @utility text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5];
+  @apply bg-clip-text text-transparent;
+  background: linear-gradient(135deg, #4F75FF 0%, #FF6B6B 50%, #FFB347 100%);
 }
 
 @utility gradient-hover {
-  @apply bg-gradient-to-b from-light-blue-100 to-light-blue-200;
+  background: linear-gradient(135deg, #2A3441/20 0%, #4F75FF/10 100%);
 }
 
 @utility primary-gradient {
-  background: linear-gradient(to bottom, #8e98ff, #606beb);
-  box-shadow: 0px 74px 21px 0px #6678ef00;
+  background: linear-gradient(135deg, #4F75FF 0%, #3B5FFF 100%);
+  box-shadow: 0 8px 32px 0 rgba(79, 117, 255, 0.3);
 }
 
 @utility primary-gradient-hover {
-  background: linear-gradient(to bottom, #717dff, #4957eb);
+  background: linear-gradient(135deg, #3B5FFF 0%, #2952FF 100%);
+  box-shadow: 0 12px 40px 0 rgba(79, 117, 255, 0.4);
+}
+
+@utility secondary-gradient {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
+  box-shadow: 0 8px 32px 0 rgba(255, 107, 107, 0.3);
+}
+
+@utility tertiary-gradient {
+  background: linear-gradient(135deg, #FFB347 0%, #FFA726 100%);
+  box-shadow: 0 8px 32px 0 rgba(255, 179, 71, 0.3);
+}
+
+@utility warm-gradient {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FFB347 100%);
+}
+
+@utility cool-gradient {
+  background: linear-gradient(135deg, #4F75FF 0%, #00D4AA 100%);
+}
+
+@utility rainbow-gradient {
+  background: linear-gradient(135deg, #4F75FF 0%, #FF6B6B 25%, #FFB347 50%, #00D4AA 75%, #4F75FF 100%);
+}
+
+@utility trusted-logos {
+  @apply flex items-center justify-center gap-8 flex-wrap opacity-60 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-300;
 }
 
 @utility inset-shadow {
-  box-shadow: inset 0 0 12px 0 rgba(36, 99, 235, 0.2);
+  box-shadow: inset 0 0 12px 0 rgba(79, 117, 255, 0.2);
   backdrop-filter: blur(10px);
+}
+
+@utility glass-effect {
+  background: linear-gradient(135deg, rgba(26, 35, 50, 0.9) 0%, rgba(34, 43, 61, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(42, 52, 65, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 @keyframes fadeIn {
@@ -148,5 +348,25 @@ form {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(79, 117, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(79, 117, 255, 0.6);
   }
 }
