@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { usePuterStore } from "~/lib/puter";
 
-const WipeApp = () => {
+export default function Wipe() {
     const { auth, isLoading, error, clearError, fs, ai, kv } = usePuterStore();
     const navigate = useNavigate();
     const [files, setFiles] = useState<FSItem[]>([]);
@@ -60,5 +60,3 @@ const WipeApp = () => {
         </div>
     );
 };
-
-export default WipeApp;
