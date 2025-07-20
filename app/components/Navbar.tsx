@@ -164,14 +164,14 @@ const Navbar = () => {
           <div className="flex flex-col space-y-1">
             {/* Theme Toggle */}
             <div className="flex items-center justify-between py-3 px-4">
-              <span className="text-gray-700 dark:text-[#A5B4C7] text-sm font-medium">Theme</span>
+              <span className="text-[color:var(--color-text-secondary)] text-sm font-medium">Theme</span>
               <ThemeToggle />
             </div>
             
             {/* Navigation Links */}
             <Link 
               to="/" 
-              className="text-gray-700 dark:text-[#A5B4C7] hover:text-gray-900 dark:hover:text-white transition-all duration-200 py-3 px-4 rounded-xl hover:bg-gray-100/50 dark:hover:bg-[#2A3441]/30 touch-manipulation min-h-[48px] flex items-center"
+              className="text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)] transition-all duration-200 py-3 px-4 rounded-xl hover:bg-[color:var(--color-bg-secondary)]/50 touch-manipulation min-h-[48px] flex items-center"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
@@ -195,23 +195,23 @@ const Navbar = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
-                  <span className="text-gray-900 dark:text-white font-medium">Signed in as {auth.user?.username || 'User'}</span>
+                  <span className="text-[color:var(--color-text-primary)] font-medium">Signed in as {auth.user?.username || 'User'}</span>
                 </div>
                 <button 
                   onClick={() => {
                     auth.signOut();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-all duration-200 py-3 px-4 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 w-full text-left touch-manipulation min-h-[48px] flex items-center"
+                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-all duration-200 py-3 px-4 rounded-xl hover:bg-red-50/50 dark:hover:bg-red-500/10 w-full text-left touch-manipulation min-h-[48px] flex items-center"
                 >
                   Sign Out
                 </button>
               </div>
             ) : (
-              <div className="border-t border-gray-200/50 dark:border-[#2A3441]/50 pt-3 mt-3">
+              <div className="border-t border-[color:var(--color-border)]/50 pt-3 mt-3">
                 <Link 
                   to="/auth" 
-                  className="text-gray-700 dark:text-[#A5B4C7] hover:text-gray-900 dark:hover:text-white transition-all duration-200 py-3 px-4 rounded-xl hover:bg-gray-100/50 dark:hover:bg-[#2A3441]/30 block touch-manipulation min-h-[48px] flex items-center"
+                  className="text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)] transition-all duration-200 py-3 px-4 rounded-xl hover:bg-[color:var(--color-bg-secondary)]/50 block touch-manipulation min-h-[48px] flex items-center"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Sign In
