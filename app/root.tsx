@@ -45,6 +45,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
       <script src="https://js.puter.com/v2/"></script>
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          (function() {
+            try {
+              const theme = localStorage.getItem('resumex-theme') ? JSON.parse(localStorage.getItem('resumex-theme')).state.theme : 'system';
+              const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+              document.documentElement.classList.add(isDark ? 'dark' : 'light');
+            } catch (e) {
+              // Fallback to light theme if there's any error
+              document.documentElement.classList.add('light');
+            }
+          })();
+        `
+      }} />
         {children}
         <ScrollRestoration />
         <Scripts />
