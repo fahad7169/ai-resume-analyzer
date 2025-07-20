@@ -158,10 +158,10 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           isMobileMenuOpen 
-            ? 'max-h-[600px] opacity-100 mt-4 pt-4 border-t border-gray-200/50 dark:border-[#2A3441]/50' 
+            ? 'max-h-[600px] opacity-100 mt-4 pt-4 border-t border-[color:var(--color-border)]/50' 
             : 'max-h-0 opacity-0'
         }`}>
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col space-y-1 bg-[color:var(--color-bg-card)]/95 backdrop-blur-xl rounded-xl p-2">
             {/* Theme Toggle */}
             <div className="flex items-center justify-between py-3 px-4">
               <span className="text-[color:var(--color-text-secondary)] text-sm font-medium">Theme</span>
