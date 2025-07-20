@@ -15,8 +15,8 @@ export const useThemeStore = create<ThemeStore>()(
   persist(
     (set, get) => ({
       theme: "system",
-      isDark: typeof window !== "undefined" ? window.matchMedia("(prefers-color-scheme: dark)").matches : true,
-      isLight: typeof window !== "undefined" ? !window.matchMedia("(prefers-color-scheme: dark)").matches : false,
+      isDark: false, // Will be properly set by setTheme
+      isLight: true, // Will be properly set by setTheme
       setTheme: (theme: Theme) => {
         set({ theme });
         const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
