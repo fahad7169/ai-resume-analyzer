@@ -12,6 +12,7 @@ import "./app.css";
 import { usePuterStore } from "./lib/puter";
 import { initializeTheme } from "./lib/theme";
 import { useEffect } from "react";
+import { useAnalytics } from "./hooks/useAnalytics";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -29,6 +30,9 @@ export const links: Route.LinksFunction = () => [
 export function Layout({ children }: { children: React.ReactNode }) {
 
   const { init } = usePuterStore()
+  
+  // Initialize analytics
+  useAnalytics();
 
   useEffect(()=>{
     init()
@@ -42,6 +46,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0TXNQL44Y1"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-0TXNQL44Y1');
+          `
+        }} />
       </head>
       <body>
       <script src="https://js.puter.com/v2/"></script>

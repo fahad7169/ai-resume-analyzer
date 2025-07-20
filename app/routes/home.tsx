@@ -4,6 +4,7 @@ import ResumeCard from "~/components/ResumeCard";
 import {usePuterStore} from "~/lib/puter";
 import {Link, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
+import { useTrackInteraction } from "~/hooks/useAnalytics";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,6 +18,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loadingResumes, setLoadingResumes] = useState(false);
+  const { trackButtonClick, trackFeatureUsage } = useTrackInteraction();
 
   useEffect(() => {
     // Only load resumes if user is authenticated and not in initial loading state
@@ -137,6 +139,7 @@ export default function Home() {
             <Link 
               to="/upload" 
               className="primary-button flex items-center gap-2 px-5 py-2.5 text-sm font-medium whitespace-nowrap"
+              onClick={() => trackButtonClick('analyze_new_resume', '/home')}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -183,6 +186,7 @@ export default function Home() {
                 background: 'linear-gradient(135deg, #4F75FF 0%, #FF6B6B 50%, #FFB347 100%)',
                 boxShadow: '0 8px 32px 0 rgba(79, 117, 255, 0.4)'
               }}
+              onClick={() => trackButtonClick(auth.isAuthenticated ? 'upload_resume' : 'get_started', '/home')}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
